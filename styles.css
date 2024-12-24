@@ -1,0 +1,438 @@
+/* 基本設定 */
+:root {
+    --vh: 1vh;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 50%, #f0f7ff 100%);
+    height: 100vh;
+    height: calc(var(--vh) * 100);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(var(--vh) * 100);
+}
+
+/* プロフィール画像エリア */
+.profile-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border: 10px solid #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    animation: gentleRotate 6s ease-in-out infinite;
+}
+
+/* メニューエリア */
+.circular-menu {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-width: 900px;
+    max-height: 900px;
+}
+
+.menu-item {
+    pointer-events: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: 0 0;
+    transform: rotate(calc(360deg / 7 * var(--i))) translateY(-300px);
+    padding: 15px 30px;
+    border-radius: 25px;
+    background: var(--menu-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* メニュー項目の色設定 */
+.menu-item:nth-child(1) { --menu-color: rgba(255, 214, 224, 0.9); }
+.menu-item:nth-child(2) { --menu-color: rgba(255, 239, 186, 0.9); }
+.menu-item:nth-child(3) { --menu-color: rgba(212, 240, 240, 0.9); }
+.menu-item:nth-child(4) { --menu-color: rgba(255, 229, 217, 0.9); }
+.menu-item:nth-child(5) { --menu-color: rgba(224, 244, 255, 0.9); }
+.menu-item:nth-child(6) { --menu-color: rgba(243, 229, 245, 0.9); }
+.menu-item:nth-child(7) { --menu-color: rgba(232, 245, 233, 0.9); }
+
+.menu-item:hover {
+    transform: rotate(calc(360deg / 7 * var(--i))) translateY(-300px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.nav-item {
+    transform: rotate(calc(-360deg / 7 * var(--i)));
+    display: block;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    pointer-events: none;
+}
+
+/* プロフィール画像の回転アニメーション */
+@keyframes gentleRotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    25% {
+        transform: translate(-50%, -50%) rotate(30deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    75% {
+        transform: translate(-50%, -50%) rotate(-30deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+/* スマホ表示時の調整 */
+@media (max-width: 768px) {
+    body {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .main-content {
+        height: 100vh;
+        padding: 0;
+        padding-bottom: 10px;
+    }
+
+    .profile-container {
+        flex: 0 0 25vh;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        border-width: 6px;
+        animation: none;
+        transform: none;
+        position: relative;
+        top: auto;
+        left: auto;
+    }
+
+    .circular-menu {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 15px;
+        padding-bottom: 20px;
+        margin: 0 10px;
+    }
+
+    .menu-item {
+        position: static;
+        transform: none !important;
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-item {
+        transform: none;
+        text-align: center;
+        display: block;
+        font-size: 0.9em;
+        padding: 8px 0;
+        width: 100%;
+    }
+}
+
+/* iPhone SE用の調整 */
+@media (max-width: 375px) {
+    .profile-container {
+        flex: 0 0 25vh;
+    }
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+        border-width: 5px;
+    }
+
+    .circular-menu {
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .menu-item {
+        padding: 6px;
+    }
+
+    .nav-item {
+        font-size: 0.85em;
+        padding: 6px 0;
+    }
+}
+
+/* 花びらのスタイル */
+#sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sakura {
+    position: absolute;
+    background: #ffd7e6;
+    border-radius: 150% 0 150% 0;
+    animation: animate-sakura linear forwards;
+    opacity: 0.7;
+}
+
+@keyframes animate-sakura {
+    0% {
+        top: -10%;
+        transform: rotate(0deg) translateX(0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    25% {
+        transform: rotate(90deg) translateX(30px) scale(0.9);
+    }
+    50% {
+        transform: rotate(180deg) translateX(-20px) scale(1.1);
+        opacity: 0.9;
+    }
+    75% {
+        transform: rotate(270deg) translateX(25px) scale(0.8);
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        top: 110%;
+        transform: rotate(360deg) translateX(0) scale(1);
+        opacity: 0;
+    }
+}
+
+/* モーダルのスタイル */
+.modal-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container.show {
+    display: flex;
+}
+
+.modal {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-title {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 8px;
+    color: #666;
+}
+
+.modal-content {
+    line-height: 1.6;
+}
+
+/* モーダルのアニメーション */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* モーダル内のコンテンツスタイル */
+.profile-content, .news-content {
+    padding: 20px;
+}
+
+.news-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.news-date {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .modal {
+        width: 95%;
+        margin: 10px;
+    }
+}
+
+/* 追加のモーダルコンテンツスタイル */
+.live-content,
+.media-content,
+.goods-content,
+.disco-content,
+.fanclub-content {
+    padding: 20px;
+}
+
+.live-item,
+.media-item,
+.goods-item,
+.disco-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.live-date,
+.media-date,
+.disco-release {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.live-title,
+.goods-name,
+.disco-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.live-venue,
+.goods-price,
+.disco-price {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.media-section {
+    margin-bottom: 25px;
+}
+
+.media-section h3 {
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.fanclub-info h3 {
+    margin-bottom: 15px;
+}
+
+.fanclub-info ul {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.fanclub-info li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.fanclub-info li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ff6b95;
+}
+
+.fanclub-fee {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+} 

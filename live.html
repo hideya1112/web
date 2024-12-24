@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVE | HIDEYA WEB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* LIVE ページ専用のスタイル */
+        .live-page {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .live-header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .back-to-home {
+            padding: 10px 20px;
+            background: var(--menu-color, rgba(212, 240, 240, 0.9));
+            border-radius: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            transform: scale(1.05);
+        }
+
+        .live-list {
+            flex: 1;
+            display: grid;
+            gap: 30px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b95 #f0f0f0;
+            grid-template-columns: 1fr;
+            align-content: start;
+        }
+
+        .live-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .live-list::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .live-list::-webkit-scrollbar-thumb {
+            background-color: #ff6b95;
+            border-radius: 4px;
+        }
+
+        .live-card {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 25px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .live-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .live-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .live-card:hover .live-image img {
+            transform: scale(1.05);
+        }
+
+        .live-date {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .live-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .live-details {
+            display: grid;
+            gap: 10px;
+        }
+
+        .live-venue {
+            font-size: 1.1em;
+        }
+
+        .live-info {
+            color: #666;
+        }
+
+        .ticket-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #ff6b95;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .ticket-button:hover {
+            transform: scale(1.05);
+            background: #ff4f82;
+        }
+
+        .pagination {
+            margin-top: auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+
+        .pagination button {
+            padding: 8px 16px;
+            border: none;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .pagination button:hover {
+            background: #ff6b95;
+            color: white;
+        }
+
+        .pagination button.active {
+            background: #ff6b95;
+            color: white;
+        }
+
+        .pagination button:disabled {
+            background: #eee;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .live-page {
+                padding: 20px 15px;
+            }
+
+            .live-list {
+                padding-right: 5px;
+            }
+
+            .live-card {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .live-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="sakura-container"></div>
+    
+    <div class="live-page">
+        <div class="live-header">
+            <h1>LIVE</h1>
+            <a href="index.html" class="back-to-home">← Back to Home</a>
+        </div>
+
+        <div class="live-list" id="live-list">
+            <!-- JavaScriptで動的に生成 -->
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- JavaScriptで動的に生成 -->
+        </div>
+    </div>
+
+    <script>
+        // 花びらのアニメーション用のスクリプトを再利用
+        function createSakura() {
+            const container = document.getElementById('sakura-container');
+            const sakura = document.createElement('div');
+            sakura.className = 'sakura';
+            
+            const size = Math.random() * (20 - 10) + 10;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 10;
+            const duration = Math.random() * (18 - 10) + 10;
+            
+            sakura.style.width = `${size}px`;
+            sakura.style.height = `${size}px`;
+            sakura.style.left = `${left}%`;
+            sakura.style.animationDelay = `${delay}s`;
+            sakura.style.animationDuration = `${duration}s`;
+            
+            container.appendChild(sakura);
+            
+            sakura.addEventListener('animationend', () => {
+                sakura.remove();
+            });
+        }
+
+        for (let i = 0; i < 15; i++) {
+            createSakura();
+        }
+
+        setInterval(createSakura, 1000);
+
+        // ライブ情報の生成と表示を管理するスクリプト
+        const liveData = Array.from({ length: 100 }, (_, index) => ({
+            date: `2024.${String(Math.floor(index / 3) % 12 + 1).padStart(2, '0')}.${String(index % 28 + 1).padStart(2, '0')}`,
+            title: `ライブタイトル ${index + 1}`,
+            venue: `○○ホール${index % 5 + 1}`,
+            time: "開場: 17:30 / 開演: 18:30",
+            price: `¥${5000 + (index % 3) * 1000}(税込)`,
+            image: `https://placehold.co/600x400/ff6b95/ffffff?text=LIVE+IMAGE+${index + 1}`
+        }));
+
+        const ITEMS_PER_PAGE = 20;
+        let currentPage = 1;
+
+        function createLiveCard(liveInfo) {
+            return `
+                <div class="live-card">
+                    <div class="live-image">
+                        <img src="${liveInfo.image}" alt="ライブ画像">
+                    </div>
+                    <div class="live-content">
+                        <div class="live-date">${liveInfo.date}</div>
+                        <div class="live-title">${liveInfo.title}</div>
+                        <div class="live-details">
+                            <div class="live-venue">会場: ${liveInfo.venue}</div>
+                            <div class="live-info">
+                                <p>${liveInfo.time}</p>
+                                <p>チケット: ${liveInfo.price}</p>
+                            </div>
+                        </div>
+                        <a href="#" class="ticket-button">チケット購入</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayLives(page) {
+            const startIndex = (page - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const liveList = document.getElementById('live-list');
+            
+            liveList.innerHTML = liveData
+                .slice(startIndex, endIndex)
+                .map(createLiveCard)
+                .join('');
+
+            updatePagination(page);
+        }
+
+        function updatePagination(currentPage) {
+            const totalPages = Math.ceil(liveData.length / ITEMS_PER_PAGE);
+            const pagination = document.getElementById('pagination');
+            
+            let paginationHTML = `
+                <button onclick="changePage(1)" ${currentPage === 1 ? 'disabled' : ''}>
+                    ≪
+                </button>
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    ＜
+                </button>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (
+                    i === 1 || 
+                    i === totalPages || 
+                    (i >= currentPage - 2 && i <= currentPage + 2)
+                ) {
+                    paginationHTML += `
+                        <button onclick="changePage(${i})" 
+                                class="${i === currentPage ? 'active' : ''}">
+                            ${i}
+                        </button>
+                    `;
+                } else if (
+                    i === currentPage - 3 || 
+                    i === currentPage + 3
+                ) {
+                    paginationHTML += `<button disabled>...</button>`;
+                }
+            }
+
+            paginationHTML += `
+                <button onclick="changePage(${currentPage + 1})" 
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    ＞
+                </button>
+                <button onclick="changePage(${totalPages})" 
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    ≫
+                </button>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayLives(page);
+            window.scrollTo(0, 0);
+        }
+
+        // 初期表示
+        displayLives(1);
+    </script>
+</body>
+</html> 

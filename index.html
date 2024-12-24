@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIDEYA WEB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="sakura-container"></div>
+    
+    <div class="main-content">
+        <div class="profile-container">
+            <img src="profile.png" alt="プロフィール画像" class="profile-image">
+        </div>
+        
+        <nav class="circular-menu">
+            <div class="menu-item" style="--i:0">
+                <a href="#" class="nav-item">PROFILE</a>
+            </div>
+            <div class="menu-item" style="--i:1">
+                <a href="#" class="nav-item">NEWS</a>
+            </div>
+            <div class="menu-item" style="--i:2">
+                <a href="live.html" class="nav-item" onclick="window.location.href='live.html'; return false;">LIVE</a>
+            </div>
+            <div class="menu-item" style="--i:3">
+                <a href="#" class="nav-item">MEDIA</a>
+            </div>
+            <div class="menu-item" style="--i:4">
+                <a href="#" class="nav-item">GOODS</a>
+            </div>
+            <div class="menu-item" style="--i:5">
+                <a href="#" class="nav-item">DISCOGRAPHY</a>
+            </div>
+            <div class="menu-item" style="--i:6">
+                <a href="#" class="nav-item">FAN CLUB</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- モーダルコンテナを追加 -->
+    <div class="modal-container" id="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title"></h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        function createSakura() {
+            const container = document.getElementById('sakura-container');
+            const sakura = document.createElement('div');
+            sakura.className = 'sakura';
+            
+            // ランダムな特性を設定
+            const size = Math.random() * (20 - 10) + 10;
+            const left = Math.random() * 100;
+            const delay = Math.random() * 10;
+            const duration = Math.random() * (18 - 10) + 10;
+            
+            sakura.style.width = `${size}px`;
+            sakura.style.height = `${size}px`;
+            sakura.style.left = `${left}%`;
+            sakura.style.animationDelay = `${delay}s`;
+            sakura.style.animationDuration = `${duration}s`;
+            
+            container.appendChild(sakura);
+            
+            // アニメーション終了後に要素を削除
+            sakura.addEventListener('animationend', () => {
+                sakura.remove();
+            });
+        }
+
+        // 初期の花びらを生成
+        for (let i = 0; i < 15; i++) {
+            createSakura();
+        }
+
+        // 定期的に新しい花びらを生成
+        setInterval(createSakura, 1000);
+
+        // ビューポートの高さを正しく設定
+        function setVH() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // 初期設定
+        setVH();
+
+        // リサイズ時に再計算
+        window.addEventListener('resize', () => {
+            setVH();
+        });
+
+        // スクロール位置を���セット（iOSのアドレスバー対策）
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.scrollTo(0, 1);
+            }, 0);
+        });
+
+        // モーダル関連の機能を追加
+        const modalContainer = document.getElementById('modal-container');
+        const modalTitle = document.querySelector('.modal-title');
+        const modalContent = document.querySelector('.modal-content');
+        const modalClose = document.querySelector('.modal-close');
+
+        // メニューの内容を定義
+        const menuContents = {
+            'PROFILE': {
+                title: 'PROFILE',
+                content: `
+                    <div class="profile-content">
+                        <h3>HIDEYA</h3>
+                        <p>ここにプロフィール文を入れます。</p>
+                    </div>
+                `
+            },
+            'NEWS': {
+                title: 'NEWS',
+                content: `
+                    <div class="news-content">
+                        <div class="news-item">
+                            <div class="news-date">2024.03.21</div>
+                            <div class="news-text">ニュース内容がここに入ります。</div>
+                        </div>
+                    </div>
+                `
+            },
+            'LIVE': {
+                title: 'LIVE',
+                content: `
+                    <div class="live-content">
+                        <div class="live-item">
+                            <div class="live-date">2024.04.15</div>
+                            <div class="live-title">ライブタイトル</div>
+                            <div class="live-venue">会場: ○○ホール</div>
+                            <div class="live-info">
+                                <p>開場: 17:30 / 開演: 18:30</p>
+                                <p>チケット: ¥5,000(税込)</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            'MEDIA': {
+                title: 'MEDIA',
+                content: `
+                    <div class="media-content">
+                        <div class="media-section">
+                            <h3>TV</h3>
+                            <div class="media-item">
+                                <div class="media-date">2024.03.25</div>
+                                <div class="media-text">○○TV 「番組名」 21:00〜22:00</div>
+                            </div>
+                        </div>
+                        <div class="media-section">
+                            <h3>RADIO</h3>
+                            <div class="media-item">
+                                <div class="media-date">2024.03.28</div>
+                                <div class="media-text">○○FM 「番組名」 13:00〜14:00</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            'GOODS': {
+                title: 'GOODS',
+                content: `
+                    <div class="goods-content">
+                        <div class="goods-item">
+                            <div class="goods-name">オリジナルTシャツ</div>
+                            <div class="goods-price">¥3,500(税込)</div>
+                            <div class="goods-description">
+                                <p>サイズ: S / M / L / XL</p>
+                                <p>カラー: White / Black</p>
+                            </div>
+                        </div>
+                        <div class="goods-item">
+                            <div class="goods-name">マフラータオル</div>
+                            <div class="goods-price">¥2,000(税込)</div>
+                            <div class="goods-description">
+                                <p>サイズ: 1100mm×200mm</p>
+                                <p>カラー: Pink</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            'DISCOGRAPHY': {
+                title: 'DISCOGRAPHY',
+                content: `
+                    <div class="disco-content">
+                        <div class="disco-item">
+                            <div class="disco-title">1st Single「タイトル」</div>
+                            <div class="disco-release">2024.02.14 Release</div>
+                            <div class="disco-price">¥1,200(税込)</div>
+                            <div class="disco-tracks">
+                                <p>1. 曲名1</p>
+                                <p>2. 曲名2</p>
+                                <p>3. 曲名3</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            'FAN CLUB': {
+                title: 'FAN CLUB',
+                content: `
+                    <div class="fanclub-content">
+                        <div class="fanclub-info">
+                            <h3>会員特典</h3>
+                            <ul>
+                                <li>ファンクラブ限定グッズ</li>
+                                <li>チケット先行予約</li>
+                                <li>会報誌（年4回発行）</li>
+                                <li>バースデーカード</li>
+                            </ul>
+                            <div class="fanclub-fee">
+                                <p>年会費: ¥4,800(税込)</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // メニュークリック時の処理
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const navItem = item.querySelector('.nav-item');
+                
+                // LIVEメニューの場合は別ページに遷移
+                if (navItem.textContent === 'LIVE') {
+                    window.location.href = 'live.html';
+                    return;
+                }
+
+                // それ以外のメニューはモーダルを表示
+                e.preventDefault();
+                const menuType = navItem.textContent;
+                const menuData = menuContents[menuType];
+                
+                if (menuData) {
+                    modalTitle.textContent = menuData.title;
+                    modalContent.innerHTML = menuData.content;
+                    modalContainer.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        // モーダルを閉じる処理
+        modalClose.addEventListener('click', () => {
+            modalContainer.classList.remove('show');
+            document.body.style.overflow = ''; // スクロール再開
+        });
+
+        // モーダル外クリックで閉じる
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) {
+                modalContainer.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html> 
